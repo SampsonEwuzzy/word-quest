@@ -24,6 +24,7 @@ button:hover:not(:disabled){border-color:#fff;transform:scale(1.03)}button:disab
 .prog{height:16px;background:var(--card);border-radius:8px;overflow:hidden}.prog i{display:block;height:100%;background:linear-gradient(90deg,#fd79a8,#fdcb6e);transition:width .3s}
 .fb{min-height:80px;text-align:center;font-size:1.15rem;margin:10px 0}
 .pop{animation:pop .4s}@keyframes pop{0%{transform:scale(.7)}60%{transform:scale(1.1)}100%{transform:scale(1)}}
+a.lnk{display:block;width:fit-content;margin:16px auto;background:#e84393;color:#fff;padding:12px 24px;border-radius:22px;font-weight:bold;text-decoration:none;font-size:1.1rem}a.lnk:hover{outline:4px solid #fff}
 </style></head><body><div id="app"></div>
 <script>
 const P={Diego:3,Winner:2},KEY="mathsquest_v1",TITLES=["Number Explorer","Number Ranger","Number Wizard","Number Hero","Number Champion","Number Legend"];
@@ -71,10 +72,10 @@ function board(){const cl=["#74b9ff","#fd79a8"];return`<h2>🏆 Scoreboard</h2><
  return`<div class="card" style="--bc:${cl[k]}"><b style="color:${cl[k]}">${n} (Grade ${P[n]})</b><p>${title(r.score)}<br>Level ${level(r.score)}</p><p>💰 Score: ${r.score}<br>⭐ Stars: ${r.stars}<br>🎮 Rounds: ${r.rounds}<br>🎯 Accuracy: ${a}%<br>🥇 Best round: ${r.best>=0?"+":""}${r.best}</p></div>`}).join("")}</div>
 <div class="center"><button class="gray" onclick="if(confirm('Reset ALL scores for both children?')){for(const n in P)D[n]=rec0();save();render()}">Reset scores (parent)</button></div>`}
 function render(){let h="";
- if(view=="pick"){h=`<h1>🔢 Maths Quest 🔢</h1><h2>Who is playing today?</h2><div class="grid">${Object.keys(P).map((n,k)=>`<button class="c${k?6:2}" style="font-size:1.8rem;padding:30px" onclick="me='${n}';go('home')">${n}<br><small>Grade ${P[n]}</small></button>`).join("")}</div><p class="rules">💖 Developed for Diego &amp; Winner 💖</p>`}
+ if(view=="pick"){h=`<h1>🔢 Maths Quest 🔢</h1><h2>Who is playing today?</h2><div class="grid">${Object.keys(P).map((n,k)=>`<button class="c${k?6:2}" style="font-size:1.8rem;padding:30px" onclick="me='${n}';go('home')">${n}<br><small>Grade ${P[n]}</small></button>`).join("")}</div><a class="lnk" href="../">📖 Try Word Quest ➡</a><p class="rules">💖 Developed for Diego &amp; Winner 💖</p>`}
  else{const r=D[me];h=`<div class="bar"><span>👤 ${me}</span><span>💰 ${r.score}</span><span>⭐ ${r.stars}</span><span>🎖 Lv ${level(r.score)} – ${title(r.score)}</span></div>`;
   if(view=="home")h+=`<h1>Hello, ${me}! 👋</h1><div class="grid">${Object.keys(MODES).map(m=>`<button class="${MODES[m][1]}" onclick="start('${m}')">${MODES[m][0]}</button>`).join("")}<button class="c6" style="--c1:#fd79a8" onclick="go('score')">🏆 Scoreboard</button></div>
-<p class="rules">✅ Correct +10 &nbsp; ❌ Wrong −5 &nbsp; 🔥 3 in a row +5 &nbsp; ⭐ Stars each round</p><div class="center"><button class="gray" onclick="go('pick')">🔄 Switch Player</button></div><p class="rules">💖 Developed for Diego &amp; Winner 💖</p>`;
+<p class="rules">✅ Correct +10 &nbsp; ❌ Wrong −5 &nbsp; 🔥 3 in a row +5 &nbsp; ⭐ Stars each round</p><div class="center"><button class="gray" onclick="go('pick')">🔄 Switch Player</button></div><a class="lnk" href="../">📖 Try Word Quest ➡</a><p class="rules">💖 Developed for Diego &amp; Winner 💖</p>`;
   else{h+={quiz,score:board}[view]();h+=`<div class="center"><button class="gray" onclick="go('home')">🏠 Home</button></div>`}}
  $.innerHTML=h;window.scrollTo(0,0)}
 render();
