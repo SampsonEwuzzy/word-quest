@@ -84,6 +84,39 @@ The bird flew over the tree.|over|Preposition
 I like tea and bread.|and|Conjunction
 I was tired but happy.|but|Conjunction
 Wear a coat because it is cold.|because|Conjunction`);
+const FR=parse(`bonjour|hello|👋|bon-ZHOOR
+au revoir|goodbye|🙋|oh ruh-VWAHR
+merci|thank you|🙏|mehr-SEE
+s'il vous plaît|please|🤲|seel voo PLAY
+oui|yes|✅|WEE
+non|no|❌|noh
+rouge|red|🔴|roozh
+bleu|blue|🔵|bluh
+vert|green|🟢|vair
+jaune|yellow|🟡|zhone
+chat|cat|🐱|shah
+chien|dog|🐶|shee-AN
+oiseau|bird|🐦|wah-ZOH
+poisson|fish|🐟|pwah-SON
+un|one|1️⃣|uh(n)
+deux|two|2️⃣|duh
+trois|three|3️⃣|trwah
+quatre|four|4️⃣|KAT-ruh
+cinq|five|5️⃣|sank`),FR3=parse(`six|six|6️⃣|sees
+sept|seven|7️⃣|set
+huit|eight|8️⃣|weet
+neuf|nine|9️⃣|nuhf
+dix|ten|🔟|deess
+maman|mum|👩|mah-MAHN
+papa|dad|👨|pah-PAH
+école|school|🏫|ay-KOL
+livre|book|📘|LEE-vruh
+pomme|apple|🍎|pom
+eau|water|💧|oh
+maison|house|🏠|may-ZON
+soleil|sun|☀️|so-LAY
+lune|moon|🌙|LOON
+ami|friend|🤝|ah-MEE`),frPool=g=>g>=3?[...FR,...FR3]:FR;
 const G2=["Noun","Verb","Adjective","Adverb"],G3=[...G2,"Pronoun","Preposition","Conjunction"];
 const INFO={Noun:["#e74c3c","🐶","A noun is a naming word. It names a person, animal, place or thing.","teacher, lion, Abuja, book","Can you see it, touch it, or name it? It is probably a noun!"],
 Verb:["#27ae60","🏃","A verb is an action word. It tells what someone or something does.","run, jump, eat, sleep","If you can DO it, it is a verb!"],
@@ -106,6 +139,8 @@ const esc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
 function build(mode){const g=P[me],pl=pool(g);let out=[];
  if(mode=="meaning")shuf(pl).slice(0,10).forEach(([w,p,m,s])=>out.push({q:`What does <span class="hl">${w}</span> mean?`,...mk(m,pl.map(x=>x[2])),ex:`<b>${w}</b> (${p}) means <i>${m}</i>.<br>“${s}”`}));
  else if(mode=="sentence")shuf(pl.filter(x=>new RegExp("\\b"+x[0]+"\\b","i").test(x[3]))).slice(0,10).forEach(([w,p,m,s])=>out.push({q:`Pick the missing word:<br>“${s.replace(new RegExp("\\b"+w+"\\b","i"),"_____")}”`,...mk(w,pl.map(x=>x[0])),ex:`Answer: <b>${w}</b> – ${m}.<br>“${s}”`}));
+ else if(mode=="french"){const fp=frPool(g);shuf(fp).slice(0,10).forEach(([f,e,j,p])=>{const toFr=Math.random()<.5;
+  out.push(toFr?{q:`How do you say <span class="hl">${e}</span> ${j} in French?`,...mk(f,fp.map(x=>x[0])),ex:`<b>${e}</b> = <b>${f}</b> ${j}<br>Say it: ${p}`}:{q:`What does <span class="hl">${f}</span> mean in English?`,...mk(e,fp.map(x=>x[1])),ex:`<b>${f}</b> means <b>${e}</b> ${j}<br>Say it: ${p}`})})}
  else{const al=g>=3?G3:G2;shuf(SENT.filter(x=>al.includes(x[2]))).slice(0,10).forEach(([s,t,p])=>{const i=INFO[p];
   out.push({q:`What part of speech is the coloured word?<br>“${s.replace(new RegExp("\\b"+esc(t)+"\\b"),`<span class="hl">${t}</span>`)}”`,...mk(p,al),ex:`<b>${t}</b> is a <b style="color:${i[0]}">${p}</b> ${i[1]}<br>${i[2]}`})})}
  return out}
@@ -122,6 +157,10 @@ function flash(){const c=fc.cards[fc.i],got=seen.has(c[0]);return`<div class="ce
 <div class="grid"><button class="c1" onclick="fcMove(-1)">⬅ Back</button><button class="c4" ${got?"disabled":""} onclick="fcGot()">${got?"✅ Learned!":"⭐ Got it! (+2)"}</button><button class="c2" onclick="fcMove(1)">Next ➡</button></div>`}
 function fcMove(s){fc.i=(fc.i+s+fc.cards.length)%fc.cards.length;render()}
 function fcGot(){seen.add(fc.cards[fc.i][0]);add(2);render()}
+function say(){try{const u=new SpeechSynthesisUtterance(fc.cards[fc.i][0]);u.lang="fr-FR";u.rate=.8;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function frCard(){const c=fc.cards[fc.i],got=seen.has(c[0]);return`<h2>🥖 Learn French</h2><div class="center">Card ${fc.i+1} of ${fc.cards.length}</div>
+<div class="card"><div style="font-size:3rem">${c[2]}</div><div class="big">${c[0]}</div><p style="color:#0984e3">say: <b>${c[3]}</b></p><p>= <b>${c[1]}</b> in English</p><button class="c5" onclick="say()">🔊 Hear it</button></div>
+<div class="grid"><button class="c1" onclick="fcMove(-1)">⬅ Back</button><button class="c4" ${got?"disabled":""} onclick="fcGot()">${got?"✅ Learned!":"⭐ Got it! (+2)"}</button><button class="c2" onclick="fcMove(1)">Next ➡</button></div>`}
 function lesson(){const names=P[me]>=3?Object.keys(INFO):G2,i=INFO[les];
  return`<h2>🎨 Parts of Speech</h2><div class="tabs">${names.map(n=>`<button style="--c1:${INFO[n][0]}" onclick="les='${n}';render()">${INFO[n][1]} ${n}</button>`).join("")}</div>
 <div class="card" style="--bc:${i[0]}"><div class="big" style="color:${i[0]}">${i[1]} ${les}</div><p>${i[2]}</p><p style="color:#0984e3">Examples: ${i[3]}</p><p style="color:#e17055">💡 ${i[4]}</p></div>`}
@@ -141,9 +180,10 @@ function render(){let h="";
   if(view=="home")h+=`<h1>Hello, ${me}! 👋</h1><div class="grid">
 <button class="c1" onclick="fc={cards:shuf(pool(P[me])),i:0};go('flash')">📖 Learn New Words</button><button class="c2" onclick="start('meaning')">🧠 Word Meaning Quiz</button>
 <button class="c3" onclick="start('sentence')">✏️ Sentence Challenge</button><button class="c4" onclick="les='Noun';go('lesson')">🎨 Parts of Speech Lesson</button>
-<button class="c5" onclick="start('pos')">🔍 Parts of Speech Game</button><button class="c6" onclick="go('score')">🏆 Scoreboard</button></div>
+<button class="c5" onclick="start('pos')">🔍 Parts of Speech Game</button><button class="c6" onclick="go('score')">🏆 Scoreboard</button>
+<button class="c2" onclick="fc={cards:shuf(frPool(P[me])),i:0};go('frflash')">🥖 Learn French Words</button><button class="c1" onclick="start('french')">🥖 French Quiz</button></div>
 <p class="rules">✅ Correct +10 &nbsp; ❌ Wrong −5 &nbsp; 🔥 3 in a row +5 &nbsp; ⭐ Stars each round</p><div class="center"><button class="gray" onclick="go('pick')">🔄 Switch Player</button></div><a class="lnk" href="maths/">🔢 Try Maths Quest ➡</a><p class="rules">💖 Developed for Diego &amp; Winner 💖</p>`;
-  else{h+={flash,lesson,quiz,score:board}[view]();h+=`<div class="center"><button class="gray" onclick="go('home')">🏠 Home</button></div>`}}
+  else{h+={flash,frflash:frCard,lesson,quiz,score:board}[view]();h+=`<div class="center"><button class="gray" onclick="go('home')">🏠 Home</button></div>`}}
  $.innerHTML=h;window.scrollTo(0,0)}
 render();
 </script></body></html>
