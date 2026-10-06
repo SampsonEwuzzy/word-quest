@@ -1,0 +1,33 @@
+:root{--ink:#2d3436;--card:#fff;--b1:#ffeaa7;--b2:#fab1a0;--b3:#a29bfe;--pur:#6c5ce7;--pink:#e84393;--bar:rgba(255,255,255,.9);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#f1f2f6;--card:#2f3542;--b1:#3d3b6b;--b2:#5b3a6b;--b3:#2c2f6b;--pur:#a29bfe;--bar:rgba(30,32,50,.9)}}
+:root[data-theme="dark"]{--ink:#f1f2f6;--card:#2f3542;--b1:#3d3b6b;--b2:#5b3a6b;--b3:#2c2f6b;--pur:#a29bfe;--bar:rgba(30,32,50,.9)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:"Nunito","Baloo 2","Comic Sans MS","Trebuchet MS",system-ui,sans-serif;color:var(--ink);background:#fab1a0;background:linear-gradient(135deg,var(--b1),var(--b2),var(--b3));background-attachment:fixed;-webkit-tap-highlight-color:transparent}
+#app{max-width:920px;margin:0 auto;padding:14px 14px 40px}
+h1,h2{text-align:center;color:var(--pur);margin:.3em 0}h1{font-size:2.3rem}
+.bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-around;align-items:center;background:var(--bar);border-radius:24px;padding:10px;font-weight:800;font-size:1.05rem;margin-bottom:12px;box-shadow:0 4px 0 rgba(0,0,0,.08)}
+.bar button{padding:4px 12px;font-size:1.1rem;border-radius:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+button{font:inherit;font-weight:800;color:#fff;border:0;border-radius:24px;padding:16px;font-size:1.2rem;cursor:pointer;background:linear-gradient(180deg,var(--c1,#6c5ce7),var(--c2,var(--c1,#4834d4)));box-shadow:0 6px 0 rgba(0,0,0,.22);transition:transform .1s,box-shadow .1s}
+button:hover:not(:disabled){transform:translateY(-3px)}button:active:not(:disabled){transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.22)}
+button:disabled{opacity:.55;cursor:default;box-shadow:none}
+.gray{--c1:#636e72;--c2:#2d3436;font-size:1rem;padding:10px 20px}
+.tile{padding:26px 14px;font-size:1.6rem;display:flex;flex-direction:column;align-items:center;gap:6px}.tile .em{font-size:3.4rem;animation:bob 2.4s ease-in-out infinite}.tile small{font-size:.95rem;opacity:.95}
+.card{background:var(--card);border:6px solid var(--bc,#a29bfe);border-radius:32px;padding:22px;text-align:center;margin:12px 0;font-size:1.4rem;box-shadow:0 6px 0 rgba(0,0,0,.1)}
+.big{font-size:2.6rem;font-weight:900;color:var(--pink)}.hl{color:var(--pink);font-size:1.4em;font-weight:900}
+.center{text-align:center;margin:14px 0}.rules{text-align:center;font-weight:800;margin:14px 0}
+.mascot{font-size:3.4rem;text-align:center;animation:bob 2s ease-in-out infinite}
+.opt{display:flex;align-items:center;gap:12px;justify-content:flex-start;text-align:left;font-size:1.5rem;min-height:74px;background:var(--card);color:var(--ink);border:5px solid var(--c1);box-shadow:0 6px 0 var(--c1)}
+.opt b{background:var(--c1);color:#fff;border-radius:50%;min-width:42px;height:42px;display:grid;place-items:center}
+.opt.sel{background:var(--c1);color:#fff;transform:scale(1.03)}.opt.sel b{background:#fff;color:var(--c1)}
+.opt.ok{background:#00b894!important;color:#fff!important;border-color:#00b894}.opt.no{background:#d63031!important;color:#fff!important;border-color:#d63031}
+.opt:disabled{opacity:1}
+.k1{--c1:#e17055}.k2{--c1:#0984e3}.k3{--c1:#00b894}.k4{--c1:#f39c12}
+.lock{--c1:#00b894;--c2:#019875;font-size:1.6rem;padding:18px 34px}
+.prog{height:22px;background:var(--card);border-radius:12px;overflow:visible;margin:8px 0}.prog i{display:block;height:100%;border-radius:12px;background:linear-gradient(90deg,#fd79a8,#fdcb6e);transition:width .4s;position:relative}.prog i:after{content:"🚀";position:absolute;right:-12px;top:-8px;font-size:1.5rem}
+.fb{min-height:70px;text-align:center;font-size:1.2rem;margin:10px 0}
+.nl{display:flex;justify-content:center;gap:6px;margin:12px 0;font-size:1.6rem;flex-wrap:wrap}.nl span{background:#dfe6e9;color:#2d3436;border-radius:12px;padding:6px 12px;min-width:44px}.nl .gap{background:#fdcb6e;animation:bob 1s infinite}
+.pop{animation:pop .4s}@keyframes pop{0%{transform:scale(.7)}60%{transform:scale(1.1)}100%{transform:scale(1)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.cf{position:fixed;top:-40px;z-index:9;pointer-events:none;animation:fall 1.6s ease-in forwards}@keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:.2}}
