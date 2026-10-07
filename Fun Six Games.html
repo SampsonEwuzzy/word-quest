@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fun Six Games</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2b2350;--card:#fff;--a:#7b61ff;--b:#ff6fb5;--c:#ffb347;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#fff;--card:#2d2552;--a:#3b2a99;--b:#8f2f6b;--c:#a8641a}}
+:root[data-theme="dark"]{--ink:#fff;--card:#2d2552;--a:#3b2a99;--b:#8f2f6b;--c:#a8641a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{background:linear-gradient(160deg,var(--a),var(--b) 60%,var(--c)) fixed;font-family:'Fredoka',system-ui,'Comic Sans MS',sans-serif;color:#fff;user-select:none}
+button{font-family:inherit;cursor:pointer}button[hidden]{display:none}
+#wrap{max-width:560px;margin:0 auto;padding:12px;min-height:100%;display:flex;flex-direction:column;gap:12px}
+header{display:flex;align-items:center;gap:10px}
+h1{flex:1;margin:0;font-size:1.35rem;text-align:center;text-shadow:0 2px 0 rgba(0,0,0,.25)}
+.pill{background:rgba(255,255,255,.25);border:0;color:#fff;border-radius:999px;padding:8px 14px;font-weight:700;font-size:1.05rem}
+#screen{flex:1;background:var(--card);color:var(--ink);border-radius:28px;padding:16px;display:flex;flex-direction:column;align-items:center;gap:14px;box-shadow:0 8px 0 rgba(0,0,0,.2)}
+.hi{font-size:1.5rem;font-weight:700;margin:4px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%}
+.tile{border:0;border-radius:22px;background:var(--c);color:#fff;font-weight:700;font-size:1.05rem;padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 6px 0 rgba(0,0,0,.25);min-height:120px;justify-content:center}
+.tile:active,.btn:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.25)}
+.em{font-size:2.2rem}
+.credit{margin:auto 0 0;font-size:.95rem;opacity:.8;text-align:center}
+.msg{font-size:1.3rem;font-weight:700;text-align:center;margin:4px 0;min-height:1.6em}
+.btn{background:#ff9f1c;color:#fff;border:0;border-radius:18px;padding:12px 22px;font-weight:700;font-size:1.1rem;box-shadow:0 5px 0 rgba(0,0,0,.25)}
+.big-btn{font-size:2.6rem;min-width:92px;padding:10px 14px;background:#4dabf7}
+.big-btn small{display:block;font-size:.8rem}
+.row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.ok{background:#37b24d!important}.no{background:#fa5252!important;animation:sh .3s}
+@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;max-width:320px}
+.cell{aspect-ratio:1;font-size:2.8rem;border:0;border-radius:16px;background:#ffe8a3;box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.cell.win{background:#8ce99a}
+.score{display:flex;gap:16px;font-size:1.15rem;font-weight:700}
+.duel{display:flex;align-items:center;gap:14px}.big{font-size:4rem;background:#e7f5ff;border-radius:24px;width:110px;height:110px;display:grid;place-items:center}
+.vs{font-weight:700;font-size:1.2rem}
+.seq{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;font-size:2.4rem}.q{opacity:.6}
+.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:360px}
+.card{aspect-ratio:1;font-size:2rem;border:0;border-radius:14px;background:linear-gradient(135deg,#7b61ff,#ff6fb5);color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.25)}
+.card.up{background:#fff3bf;color:#000}
+.pal{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.sw{width:40px;height:40px;border-radius:8px;border:3px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.3);font-size:1.2rem;padding:0;background:#fff}
+.sw.on{border-color:#222;transform:scale(1.18)}
+.bgrid{display:grid;grid-template-columns:repeat(10,1fr);gap:1px;width:100%;border:4px solid #5a3a1a;border-radius:8px;background:#bfe6ff}
+.bc{aspect-ratio:1;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1)}
+.bc[style]{box-shadow:inset 0 0 0 1px rgba(0,0,0,.2),inset -3px -3px 0 rgba(0,0,0,.18),inset 3px 3px 0 rgba(255,255,255,.2)}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#222;color:#fff;padding:10px 20px;border-radius:999px;font-weight:700;opacity:0;transition:opacity .2s;pointer-events:none}
+#toast.show{opacity:1}
+.mgrid{grid-template-columns:repeat(var(--n,4),1fr)}
+.card{font-size:1.35rem;line-height:1.1;overflow:hidden;padding:2px;overflow-wrap:anywhere}
+.lbl{font-weight:700;margin:0 0 -8px;align-self:flex-start}
+.bgrid{grid-template-columns:repeat(var(--n,6),1fr);max-width:340px}.bgrid.tg{max-width:200px}
+.sw{width:62px;height:auto;padding:4px;font-size:.72rem;font-weight:700;color:#222;background:#f1f3f5;display:flex;flex-direction:column;align-items:center;gap:2px}
+.sw i{width:34px;height:34px;border-radius:6px;display:block;box-shadow:inset -3px -3px 0 rgba(0,0,0,.2),inset 0 0 0 1px rgba(0,0,0,.25)}
+.cnt .big-btn{font-size:1.6rem}
+.flash{outline:4px solid #ff6b6b;outline-offset:-4px;animation:sh .3s 3}
+.card{font-size:clamp(.8rem,3.6vw,1.35rem)}.mgrid{max-width:440px}
+</style></head>
+<body>
+<div id="wrap">
+<header><button class="pill" id="back" hidden>🏠</button><h1 id="title">Fun Six</h1><span class="pill" id="stars">⭐ 0</span></header>
+<main id="screen"></main>
+</div>
+<div id="toast"></div>
+<script>
+const $=s=>document.querySelector(s),scr=$('#screen'),title=$('#title'),back=$('#back'),starEl=$('#stars');
+let stars=0;try{stars=+localStorage.getItem('stars')||0}catch(e){}
+starEl.textContent='⭐ '+stars;
+function addStar(n=1){stars+=n;try{localStorage.setItem('stars',stars)}catch(e){}starEl.textContent='⭐ '+stars}
+let ac;function beep(f=600,d=.12,t='sine'){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.type=t;o.frequency.value=f;g.gain.value=.08;o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+d)}catch(e){}}
+const good=()=>{beep(660);setTimeout(()=>beep(880),120)},bad=()=>beep(200,.2,'square');
+function say(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(say.t);say.t=setTimeout(()=>t.classList.remove('show'),1400)}
+const pick=a=>a[Math.random()*a.length|0],shuffle=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
+
+/* 1. Tic-Tac-Toe */
+function ttt(){let b=Array(9).fill(''),over=false,busy=false;const L=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]],w=s=>L.find(l=>l.every(i=>b[i]===s));
+scr.innerHTML=`<p id="msg" class="msg">You are ❌. Your turn!</p><div class="board">${b.map((_,i)=>`<button class="cell"></button>`).join('')}</div><button class="btn" id="again">Play again</button>`;
+const cells=[...scr.querySelectorAll('.cell')],msg=$('#msg'),draw=()=>cells.forEach((c,i)=>c.textContent=b[i]==='X'?'❌':b[i]==='O'?'⭕':'');
+function end(){const l=w('X')||w('O');if(l){over=true;l.forEach(i=>cells[i].classList.add('win'));if(b[l[0]]==='X'){msg.textContent='You win! 🎉';addStar();good()}else{msg.textContent='I won this time! Try again 😊';bad()}}else if(b.every(x=>x)){over=true;msg.textContent="It's a draw! 🤝";beep(400)}return over}
+function cpu(){const free=b.map((v,i)=>v?null:i).filter(v=>v!==null),f=s=>free.find(i=>{b[i]=s;const r=!!w(s);b[i]='';return r});
+const m=(Math.random()<.7?f('O')??f('X'):null)??pick(free);b[m]='O';draw();busy=false;if(!end())msg.textContent='Your turn!'}
+cells.forEach((c,i)=>c.onclick=()=>{if(over||busy||b[i])return;b[i]='X';draw();beep(520,.08);if(!end()){busy=true;msg.textContent='Thinking…';setTimeout(cpu,500)}});
+$('#again').onclick=ttt}
+
+/* 2. Rock Paper Scissors */
+function rps(){let me=0,pc=0,n=0;const O=[['✊','Rock'],['✋','Paper'],['✌️','Scissors']];
+scr.innerHTML=`<div class="score"><span>You <b id="me">0</b></span><span>Round <b id="n">0</b>/5</span><span>Me <b id="pc">0</b></span></div><div class="duel"><div class="big" id="a">❓</div><div class="vs">VS</div><div class="big" id="b">❓</div></div><p id="msg" class="msg">Choose one!</p><div class="row">${O.map((o,i)=>`<button class="btn big-btn" data-i="${i}">${o[0]}<small>${o[1]}</small></button>`).join('')}</div>`;
+scr.querySelectorAll('[data-i]').forEach(bt=>bt.onclick=()=>{if(n>=5)return;const a=+bt.dataset.i,c=Math.random()*3|0;$('#a').textContent=O[a][0];$('#b').textContent=O[c][0];n++;let r;
+if(a===c)r="It's a tie!";else if((a-c+3)%3===1){me++;r='You win this round! 🎉';good()}else{pc++;r='I win this round!';bad()}
+$('#me').textContent=me;$('#pc').textContent=pc;$('#n').textContent=n;$('#msg').textContent=r;
+if(n===5)setTimeout(()=>{$('#msg').innerHTML=(me>pc?'🏆 You won the game!':me<pc?'I won! Try again!':'Game tied!')+'<br><button class="btn" id="re">Play again</button>';if(me>pc)addStar(2);$('#re').onclick=rps},900)})}
+
+/* 3 & 4. Logic quizzes */
+function quiz(gen){const r=gen();
+scr.innerHTML=`<p class="msg">${r.q}</p>${r.show?`<div class="seq">${r.show}</div>`:''}<div class="row ${r.cls||''}">${r.opts.map(o=>`<button class="btn big-btn" data-o="${o}">${o}</button>`).join('')}</div>`;
+scr.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{if(b.dataset.o===r.ans){b.classList.add('ok');addStar();if(r.win)r.win();good();say('Great job! ⭐');setTimeout(()=>quiz(gen),1000)}else{b.classList.add('no');bad();if(r.lose)r.lose();say('Try again! 💪')}})}
+const P=['🔴','🔵','🟡','🟢','🟣','🟠','⭐','🍎','🐶','🐱'],
+sq=(t,h)=>{const a=t[h],o=new Set([a]);while(o.size<4){const d=(Math.random()*9|0)-4,x=a+d;if(d&&x>0)o.add(x)}return{show:t.map((x,i)=>`<span>${i===h?'❓':x}</span>`).join(''),opts:shuffle([...o].map(String)),ans:String(a)}},
+pat=()=>{let st=0;return quiz(()=>{const L=Math.min(st/3|0,4),w={win:()=>st++,lose:()=>{st=Math.max(0,st-2)}};let r;
+if(L<2){const s=shuffle(P).slice(0,L?4:3),U=pick(L?[[0,1,2,3],[0,0,1,1],[0,1,0,2],[0,1,2,1]]:[[0,1],[0,0,1],[0,1,2],[0,1,1]]),n=L?7:6,q=[...Array(n)].map((_,i)=>s[U[i%U.length]]),h=L?3+(Math.random()*3|0):n-1;
+r={q:L?'Find the missing one!':'What comes next?',show:q.slice(0,L?n:n-1).map((x,i)=>`<span>${i===h?'❓':x}</span>`).join('')+(L?'':'<span class="q">❓</span>'),opts:s,ans:q[h]}}
+else if(L<3){const d=pick([2,3,4,5,10]),s0=1+(Math.random()*8|0);r=sq([...Array(5)].map((_,i)=>s0+d*i),pick([4,2,3]))}
+else if(L<4){const d=pick([2,3,4,5]),g=1+(Math.random()*3|0);r=sq(Math.random()<.5?[...Array(5)].map((_,i)=>d*(8-i)):[...Array(5)].map((_,i)=>g*2**i),pick([3,4]))}
+else if(Math.random()<.5){let x=1+(Math.random()*5|0);const t=[x];for(let i=1;i<6;i++)t.push(x+=i);r=sq(t,pick([4,5]))}
+else{const a=1+(Math.random()*4|0),b=pick([5,10]);r=sq([a,b,a+1,2*b,a+2,3*b],pick([4,5]))}
+return{...r,q:'Level '+(L+1)+': '+(r.q||'Find the missing number. Look for the rule!'),...w}})},
+R=[['Which one can NOT fly?',['🐦','🦋','🐝','🦅','✈️'],['🐶','🐢','🚗','🐘','🐱']],['Which one does NOT live in water?',['🐟','🐙','🐳','🦀','🐬'],['🐶','🐘','🐯','🐔']],['Which one is NOT a fruit?',['🍎','🍌','🍇','🍓','🍊'],['🥕','🌽','🍞','🥦']],['Which one has NO wheels?',['🚗','🚌','🚲','🛵','🚜'],['⛵','🚀','🐴']]],
+W=[['CAT','HAT','BAT','MAT','RAT'],['SUN','FUN','RUN','BUN','GUN'],['DOG','LOG','FOG','HOG','JOG']],
+odd=()=>{let st=0;const G=[
+()=>{const[q,Y,N]=pick(R),b=pick(N);return{q,opts:shuffle([...shuffle(Y).slice(0,3),b]),ans:b}},
+()=>{const p=Math.random()<.5?0:1,all=[...Array(20)].map((_,i)=>i+1),m=shuffle(all.filter(x=>x%2===p)).slice(0,3),b=pick(all.filter(x=>x%2!==p));return{q:'Which number does NOT belong? Think: even and odd!',opts:shuffle([...m,b]).map(String),ans:String(b)}},
+()=>{const k=2+(Math.random()*3|0),j=k+(Math.random()<.5?1:-1),e=pick(['🍎','⭐','🐟','🍌']);return{q:'Which group has a DIFFERENT number?',opts:shuffle([e.repeat(k),e.repeat(k),e.repeat(k),e.repeat(j)]),ans:e.repeat(j),cls:'cnt'}},
+()=>{const k=pick([3,4,5,6]),m=shuffle([...Array(12)].map((_,i)=>k*(i+1))).slice(0,3),b=k*(1+(Math.random()*12|0))+pick([1,-1]);return{q:'Which number is NOT in the '+k+' times table?',opts:shuffle([...m,b]).map(String),ans:String(b)}},
+()=>{const[A,B]=shuffle(W),b=pick(B);return{q:'Which word does NOT rhyme with the others?',opts:shuffle([...shuffle(A).slice(0,3),b]),ans:b}},
+()=>{const S=8+(Math.random()*8|0),e=(t)=>{const a=1+(Math.random()*(t-2)|0);return a+'+'+(t-a)},t=S+pick([1,-1]),b=e(t);return{q:'Which sum gives a DIFFERENT answer?',opts:shuffle([e(S),e(S),e(S),b]),ans:b}}];
+return quiz(()=>{const L=Math.min(st/3|0,4),r=G[pick([[0,2],[0,1,2],[1,3],[3,4],[4,5,3,1]][L])]();return{...r,q:'Level '+(L+1)+': '+r.q,win:()=>st++,lose:()=>{st=Math.max(0,st-2)}}})};
+
+/* 5. Memory Match */
+const MP=[['🐶','DOG'],['🐱','CAT'],['☀️','SUN'],['🐝','BEE'],['🐟','FISH'],['🌳','TREE'],['🚗','CAR'],['🍎','APPLE'],['2+3','5'],['4+4','8'],['6+3','9'],['5+5','10'],['7+4','11'],['9+3','12'],['8+5','13'],['9+5','14'],['🕐','1:00'],['🕒','3:00'],['🕕','6:00'],['🕘','9:00'],['🕛','12:00'],['🕖','7:00']];
+function mem(lv=0){const np=[6,8,10,12][lv],pk=[4,4,5,6][lv],d=shuffle(shuffle(MP).slice(0,np).flatMap((p,k)=>[{k,t:p[0]},{k,t:p[1]}]));let first=null,lock=true,found=0,moves=0;
+scr.innerHTML=`<p class="msg" id="mm">Level ${lv+1}: memorise the cards!</p><p class="msg">Match picture and word, sum and answer, clock and time. Moves: <b id="mv">0</b></p><div class="mgrid" style="--n:${pk}">${d.map(()=>'<button class="card"></button>').join('')}</div>`;
+const cs=[...scr.querySelectorAll('.card')],up=(i,on)=>{cs[i].classList.toggle('up',on);cs[i].textContent=on?d[i].t:'❓'};
+d.forEach((_,i)=>up(i,lv<3));
+setTimeout(()=>{d.forEach((_,i)=>up(i,false));lock=false;$('#mm').textContent=`Level ${lv+1}: find the pairs!`},[4000,3500,3000,0][lv]);
+cs.forEach((c,i)=>c.onclick=()=>{if(lock||c.classList.contains('up'))return;up(i,true);beep(500,.06);
+if(first===null){first=i;return}
+const j=first;first=null;moves++;$('#mv').textContent=moves;
+if(d[i].k===d[j].k){found++;good();if(found===np){const great=moves<=Math.round(np*1.6);addStar(great?3:1);say(`Level ${lv+1} done! ${great?'Super memory! ':''}⭐`);setTimeout(()=>mem(Math.min(lv+1,3)),1800)}}
+else{lock=true;bad();setTimeout(()=>{up(i,false);up(j,false);lock=false},1000)}})}
+
+/* 6. Block Builder */
+const BK={g:['#5bbd3a','Grass'],d:['#8b5a2b','Dirt'],w:['#c68642','Wood'],s:['#9aa0a6','Stone'],b:['#3b9cff','Water'],y:['#f3d98b','Sand'],l:['#2e8b3d','Leaves'],r:['#ff4d4d','Red']},
+BP=[['..rr..','.rrrr.','.wwww.','.wbbw.','gggggg'],['..ll..','.llll.','..ww..','..ww..','gggggg'],['s.ss.s','ssssss','ssbbss','ssddss','gggggg'],['..yy..','..yy..','wwwwww','.wwww.','bbbbbb'],
+['s.s..s.s','ssssssss','ssbssbss','sssddsss','sssddsss','gggggggg'],['...rr...','..rrrr..','.rrrrrr.','.wwwwww.','.wbwwbw.','gggggggg'],['......yy','.ll...yy','llll....','.ww..ss.','.ww.ssss','gggggggg']],
+CH=[[0,'copy'],[1,'copy'],[4,'copy'],[5,'copy'],[0,'mirror'],[2,'mirror'],[1,'memory'],[4,'memory'],[6,'memory'],[5,'mirror']],
+MS={copy:'Copy the picture!',mirror:'Build the MIRROR picture: flip it left to right!',memory:'Look carefully for 6 seconds, then build it from memory!'};
+let bi=-1;
+function blk(){bi=(bi+1)%CH.length;const[pi,mode]=CH[bi],PIC=BP[pi],W=PIC[0].length,N=W*PIC.length,T=PIC.map(r=>mode==='mirror'?[...r].reverse().join(''):r).join(''),P=Array(N).fill('.');let sel='g',done=false;
+const cell=k=>`<div class="bc"${k==='.'?'':` style="background:${BK[k][0]}"`}></div>`;
+scr.innerHTML=`<p class="msg">Level ${bi+1}: ${MS[mode]}</p><div class="lbl">The picture:</div><div class="bgrid tg" id="tg" style="--n:${W}">${[...PIC.join('')].map(cell).join('')}</div><div class="lbl">Your build:</div><div class="bgrid" id="mine" style="--n:${W}">${P.map(()=>'<div class="bc"></div>').join('')}</div><div class="pal">${Object.entries(BK).map(([k,v])=>`<button class="sw" data-k="${k}"><i style="background:${v[0]}"></i>${v[1]}</button>`).join('')}<button class="sw" data-k=".">🧽<br>Erase</button></div><p class="msg" id="left"></p><button class="btn" id="hint">💡 Hint</button>`;
+if(mode==='memory')setTimeout(()=>{$('#tg').innerHTML=Array(N).fill('<div class="bc" style="background:#adb5bd"></div>').join('')},6000);
+const mine=[...$('#mine').children],sw=[...scr.querySelectorAll('.sw')],mark=()=>sw.forEach(x=>x.classList.toggle('on',x.dataset.k===sel)),left=()=>P.filter((x,i)=>x!==T[i]).length,show=()=>{const n=left();$('#left').textContent=n?`Squares still to fix: ${n}`:'You built it! 🎉';return n};
+mark();show();
+sw.forEach(x=>x.onclick=()=>{sel=x.dataset.k;mark();beep(400,.05)});
+mine.forEach((c,i)=>c.onclick=()=>{if(done)return;P[i]=sel;if(sel==='.')c.removeAttribute('style');else c.style.background=BK[sel][0];beep(sel==='.'?250:350,.06,'square');if(!show()){done=true;addStar(mode==='copy'?2:3);good();setTimeout(blk,2200)}});
+$('#hint').onclick=()=>{const i=P.findIndex((x,k)=>x!==T[k]);if(i<0)return;mine[i].classList.remove('flash');void mine[i].offsetWidth;mine[i].classList.add('flash');say('Look at this square! 👀')}}
+
+/* Menu */
+const games=[{n:'Tic-Tac-Toe',e:'❌⭕',c:'#ff6b6b',f:ttt},{n:'Rock Paper Scissors',e:'✊✋✌️',c:'#339af0',f:rps},{n:'What Comes Next?',e:'🔴🔵🔴❓',c:'#9b5de5',f:pat},{n:'Odd One Out',e:'🍎🍎🍌',c:'#2fbf71',f:odd},{n:'Memory Match',e:'🃏🐼',c:'#f08c00',f:mem},{n:'Block Builder',e:'🧱⛏️',c:'#8d6e63',f:blk}];
+function menu(){title.textContent='Fun Six';back.hidden=true;
+scr.innerHTML=`<p class="hi">Pick a game! 🎉</p><div class="grid">${games.map((g,i)=>`<button class="tile" style="background:${g.c}" data-i="${i}"><span class="em">${g.e}</span><span>${g.n}</span></button>`).join('')}</div><p class="credit">Produced by Sampson Ewuzie</p>`;
+scr.querySelectorAll('.tile').forEach(b=>b.onclick=()=>{const g=games[+b.dataset.i];title.textContent=g.n;back.hidden=false;scr.innerHTML='';g.f()})}
+back.onclick=menu;menu();
+</script></body></html>
